@@ -6,17 +6,23 @@ import {
   Param,
   Patch,
   Post,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import {
   ApiCreatedResponse,
   ApiOkResponse,
   ApiOperation,
   ApiTags,
+  ApiConsumes,
+  ApiBody,
 } from '@nestjs/swagger';
 import { CompaniesService } from './companies.service';
 import { Company } from './company.entity';
 import { CreateCompanyDto } from './dto/create-company.dto';
 import { UpdateCompanyDto } from './dto/update-company.dto';
+import { ImportCompaniesResultDto } from './dto/import-companies-result.dto';
 
 @ApiTags('companies')
 @Controller('companies')
@@ -59,5 +65,27 @@ export class CompaniesController {
   @ApiOkResponse()
   remove(@Param('id') id: string): Promise<void> {
     return this.companiesService.remove(id);
+  }
+
+  @Post('import')
+  @UseInterceptors(FileInterceptor('file'))
+  @ApiOperation({ summary: 'Import companies from Excel' })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
+  @ApiCreatedResponse({ type: ImportCompaniesResultDto })
+  importCompanies(
+    @UploadedFile() file: { buffer: Buffer },
+  ): Promise<ImportCompaniesResultDto> {
+    return this.companiesService.importCompanies(file);
   }
 }
