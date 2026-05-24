@@ -221,6 +221,13 @@ export class AdAuthService {
       throw new UnauthorizedException('AD URL is not configured');
     }
 
-    return ldap.createClient({ url }) as LdapClient;
+    const client = ldap.createClient({ url }) as LdapClient;
+    
+    // Add error handler to prevent unhandled error events
+    (client as any).on('error', (err: Error) => {
+      console.error('LDAP client error:', err.message);
+    });
+
+    return client;
   }
 }
