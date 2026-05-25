@@ -31,6 +31,7 @@ export interface ExtractedEmployeeData {
   organizationUnit: string | null;
   jobTitle: string | null;
   periodTitle: string | null;
+  leaveBalance: string | null;
 
   loans: SalaryReceiptLoan[];
   deductions: SalaryReceiptDeduction[];

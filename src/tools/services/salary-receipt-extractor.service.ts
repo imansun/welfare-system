@@ -20,15 +20,18 @@ export class SalaryReceiptExtractorService {
     this.logger.log('Starting extraction process...');
 
     this.logger.debug(
-      `XML ROOT KEYS: ${xmlJson && typeof xmlJson === 'object'
-        ? Object.keys(xmlJson).join(', ')
-        : 'root is not object'}`,
+      `XML ROOT KEYS: ${
+        xmlJson && typeof xmlJson === 'object'
+          ? Object.keys(xmlJson).join(', ')
+          : 'root is not object'
+      }`,
     );
 
     const employeeNodes = this.findEmployeeNodes(xmlJson);
     this.logger.log(`Found ${employeeNodes.length} candidate employee nodes.`);
 
-    const uniqueEmployeeNodes = this.removeDuplicateEmployeeNodes(employeeNodes);
+    const uniqueEmployeeNodes =
+      this.removeDuplicateEmployeeNodes(employeeNodes);
     this.logger.log(
       `Processing ${uniqueEmployeeNodes.length} unique employees after de-duplication.`,
     );
@@ -54,11 +57,13 @@ export class SalaryReceiptExtractorService {
       root?.Tablix1?.Details_Collection?.Details?.Column0?.SalaryReceiptItem;
 
     this.logger.debug(
-      `Direct path type: ${directSalaryReceiptItems
-        ? Array.isArray(directSalaryReceiptItems)
-          ? 'array'
-          : typeof directSalaryReceiptItems
-        : 'undefined/null'}`,
+      `Direct path type: ${
+        directSalaryReceiptItems
+          ? Array.isArray(directSalaryReceiptItems)
+            ? 'array'
+            : typeof directSalaryReceiptItems
+          : 'undefined/null'
+      }`,
     );
 
     const directItems = this.toArray(directSalaryReceiptItems).filter((item) =>
@@ -223,6 +228,8 @@ export class SalaryReceiptExtractorService {
       this.getValue(root, 'CompanyName'),
       this.getValue(root, 'CompanyTitle'),
       this.getValue(root, 'Title'),
+      this.getValue(rectangle1, 'Textbox32'),
+      this.getValue(employeeNode, 'Textbox32'),
     ]);
 
     const year = this.pickFirst([
@@ -231,6 +238,8 @@ export class SalaryReceiptExtractorService {
       this.getValue(employeeNode, 'Year'),
       this.getValue(root, 'Year'),
       this.getValue(root, 'FiscalYear'),
+      this.getDirectValue(rectangle1, 'Textbox46'),
+      this.getValue(employeeNode, 'Textbox46'),
     ]);
 
     const monthTitle = this.pickFirst([
@@ -240,6 +249,10 @@ export class SalaryReceiptExtractorService {
       this.getValue(employeeNode, 'MonthName'),
       this.getValue(root, 'MonthTitle'),
       this.getValue(root, 'MonthName'),
+      this.getDirectValue(rectangle1, 'YearMonthTitle'),
+      this.getDirectValue(rectangle1, 'Textbox45'),
+      this.getValue(employeeNode, 'YearMonthTitle'),
+      this.getValue(employeeNode, 'Textbox45'),
     ]);
 
     const receiptType = this.pickFirst([
@@ -258,24 +271,32 @@ export class SalaryReceiptExtractorService {
       this.getValue(employeeNode, 'OrganizationUnit'),
       this.getValue(employeeNode, 'Department'),
       this.getValue(employeeNode, 'UnitTitle'),
+      this.getDirectValue(rectangle1, 'Textbox35'),
+      this.getValue(employeeNode, 'Textbox35'),
     ]);
 
     const jobTitle = this.pickFirst([
       this.getDirectValue(rectangle1, 'JobTitle'),
       this.getDirectValue(rectangle1, 'PostTitle'),
-      this.getDirectValue(rectangle1, 'Textbox8'),
+      this.getDirectValue(rectangle1, 'Textbox10'),
       this.getDirectValue(employeeNode, 'JobTitle'),
       this.getValue(employeeNode, 'JobTitle'),
       this.getValue(employeeNode, 'PostTitle'),
+      this.getValue(employeeNode, 'Textbox10'),
+    ]);
+
+    const leaveBalance = this.pickFirst([
+      this.getDirectValue(rectangle1, 'LeaveBalance'),
+      this.getDirectValue(rectangle1, 'Textbox8'),
+      this.getDirectValue(employeeNode, 'LeaveBalance'),
+      this.getValue(employeeNode, 'LeaveBalance'),
       this.getValue(employeeNode, 'Textbox8'),
     ]);
 
     const periodTitle = this.pickFirst([
       this.getDirectValue(rectangle1, 'PeriodTitle'),
-      this.getDirectValue(rectangle1, 'Textbox10'),
       this.getDirectValue(employeeNode, 'PeriodTitle'),
       this.getValue(employeeNode, 'PeriodTitle'),
-      this.getValue(employeeNode, 'Textbox10'),
       this.getValue(root, 'PeriodTitle'),
     ]);
 
@@ -348,6 +369,7 @@ export class SalaryReceiptExtractorService {
       organizationUnit,
       jobTitle,
       periodTitle,
+      leaveBalance,
 
       loans,
       deductions,
@@ -556,8 +578,7 @@ export class SalaryReceiptExtractorService {
   }
 
   private getDetails4(employeeNode: any): any[] {
-    const directDetails4 =
-      employeeNode?.Tablix2?.Details4_Collection?.Details4;
+    const directDetails4 = employeeNode?.Tablix2?.Details4_Collection?.Details4;
 
     const directDetails4Array = this.toArray(directDetails4);
 
@@ -636,7 +657,11 @@ export class SalaryReceiptExtractorService {
       return node.attributes[key];
     }
 
-    if (node.attrs && node.attrs[key] !== undefined && node.attrs[key] !== null) {
+    if (
+      node.attrs &&
+      node.attrs[key] !== undefined &&
+      node.attrs[key] !== null
+    ) {
       return node.attrs[key];
     }
 
