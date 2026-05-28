@@ -85,8 +85,15 @@ export class PeriodsController {
   }
 
   @Post(':periodId/package-items')
-  @ApiOperation({ summary: 'Create period package item' })
-  @ApiCreatedResponse({ type: PeriodPackageItem })
+  @ApiOperation({
+    summary: 'Create period package item',
+    description:
+      'Add a new item to the period package with specified quantity and unit price. The price should be in Rials as a positive integer. Quantity can have up to 3 decimal places. Only periods in DRAFT or RECIPIENTS_IMPORTED status can be modified.',
+  })
+  @ApiCreatedResponse({
+    type: PeriodPackageItem,
+    description: 'Successfully created period package item',
+  })
   createPackageItem(
     @Param('periodId') periodId: string,
     @Body() createDto: CreatePeriodPackageItemDto,
@@ -95,8 +102,15 @@ export class PeriodsController {
   }
 
   @Get(':periodId/package-items')
-  @ApiOperation({ summary: 'List period package items' })
-  @ApiOkResponse({ type: [PeriodPackageItem] })
+  @ApiOperation({
+    summary: 'List period package items',
+    description:
+      'Retrieve all items in the period package with their quantities, unit prices, and related item details including unit information.',
+  })
+  @ApiOkResponse({
+    type: [PeriodPackageItem],
+    description: 'Array of period package items',
+  })
   findPackageItems(
     @Param('periodId') periodId: string,
   ): Promise<PeriodPackageItem[]> {
@@ -104,8 +118,15 @@ export class PeriodsController {
   }
 
   @Get(':periodId/package-items/:packageItemId')
-  @ApiOperation({ summary: 'Get period package item by id' })
-  @ApiOkResponse({ type: PeriodPackageItem })
+  @ApiOperation({
+    summary: 'Get period package item by id',
+    description:
+      'Retrieve a specific package item from the period by its ID, including item details and unit information.',
+  })
+  @ApiOkResponse({
+    type: PeriodPackageItem,
+    description: 'The requested period package item',
+  })
   findPackageItem(
     @Param('periodId') periodId: string,
     @Param('packageItemId') packageItemId: string,
@@ -114,8 +135,15 @@ export class PeriodsController {
   }
 
   @Patch(':periodId/package-items/:packageItemId')
-  @ApiOperation({ summary: 'Update period package item' })
-  @ApiOkResponse({ type: PeriodPackageItem })
+  @ApiOperation({
+    summary: 'Update period package item',
+    description:
+      'Update quantity, price, or note of an existing package item. Only periods in DRAFT, RECIPIENTS_IMPORTED, or PACKAGE_DEFINED status can be modified. Archived, INVOICED, and CANCELED periods are read-only.',
+  })
+  @ApiOkResponse({
+    type: PeriodPackageItem,
+    description: 'Updated period package item',
+  })
   updatePackageItem(
     @Param('periodId') periodId: string,
     @Param('packageItemId') packageItemId: string,
@@ -125,8 +153,12 @@ export class PeriodsController {
   }
 
   @Delete(':periodId/package-items/:packageItemId')
-  @ApiOperation({ summary: 'Delete period package item' })
-  @ApiOkResponse()
+  @ApiOperation({
+    summary: 'Delete period package item',
+    description:
+      'Remove a package item from the period. Only periods in DRAFT, RECIPIENTS_IMPORTED, or PACKAGE_DEFINED status can be modified. Archived, INVOICED, and CANCELED periods are read-only.',
+  })
+  @ApiOkResponse({ description: 'Successfully deleted period package item' })
   removePackageItem(
     @Param('periodId') periodId: string,
     @Param('packageItemId') packageItemId: string,
