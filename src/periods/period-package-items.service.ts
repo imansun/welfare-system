@@ -46,6 +46,7 @@ export class PeriodPackageItemsService {
       period,
       item,
       quantity: createDto.quantity,
+      price: createDto.price,
       note: createDto.note,
     });
 
