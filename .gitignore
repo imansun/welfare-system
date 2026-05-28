@@ -1,1 +1,23 @@
-Nothing should be ignored based on the provided file changes. The only modified file is a TypeScript source file (`src/employees/employees.controller.ts`), which is a legitimate source code file that should not be ignored. There are no build artifacts, dependencies, temporary files, or other items in the change list that warrant being added to .gitignore.
+```
+# Dependencies
+node_modules/
+
+# Compiled and build artifacts
+dist/
+build/
+target/
+
+# Logs and temp files
+*.log
+*.tmp
+*.swp
+
+# Editors
+.vscode/
+.idea/
+
+# Environment
+.env
+.env.local
+.env.*
+```
