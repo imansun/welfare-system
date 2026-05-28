@@ -1,0 +1,8 @@
+export declare enum DistributionPeriodStatus {
+    DRAFT = "DRAFT",
+    RECIPIENTS_IMPORTED = "RECIPIENTS_IMPORTED",
+    PACKAGE_DEFINED = "PACKAGE_DEFINED",
+    INVOICED = "INVOICED",
+    ARCHIVED = "ARCHIVED",
+    CANCELED = "CANCELED"
+}
