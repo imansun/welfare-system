@@ -2,53 +2,15 @@
 # Dependencies
 node_modules/
 
-# Compiled and build artifacts
-dist/
-build/
-target/
-
-# Python cache
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
+# Environment
+.env
+.env.local
+.env.*
 
 # Logs and temp files
 *.log
 *.tmp
-*.swp
-
-# Environment
-.env
-.env.local
-*.env.*
 
 # Editors
 .vscode/
-.idea/
-
-# OS generated files
-.DS_Store
-Thumbs.db
-
-# Testing
-.coverage
-coverage/
-htmlcov/
-
-# Package manager caches
-.npm/
-.yarn/
-.pnpm/
-.bazel/
-.buck/
-.ivy2/
-.gradle/
-
-# TypeScript/JavaScript build output
-*.js.map
-*.tsbuildinfo
-
-# Angular specific
-.angular/
 ```
