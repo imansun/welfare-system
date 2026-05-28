@@ -111,6 +111,13 @@ export class InvoicesService {
     packageItems: PeriodPackageItem[],
   ): Promise<Invoice> {
     const employee = recipient.employee;
+    
+    // Calculate total amount from all items
+    const totalAmount = packageItems.reduce((sum, item) => {
+      const itemTotal = BigInt(item.price) * BigInt(Math.round(parseFloat(item.quantity.toString())));
+      return sum + itemTotal;
+    }, BigInt(0));
+
     const invoice = this.invoicesRepository.create({
       period,
       employee,
@@ -121,6 +128,7 @@ export class InvoicesService {
       companyName: employee.company?.name ?? null,
       periodTitle: period.title,
       periodCode: period.code,
+      totalAmount: totalAmount.toString(),
       totalItems: packageItems.length,
     });
 

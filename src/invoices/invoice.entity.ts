@@ -62,6 +62,10 @@ export class Invoice {
   @Column()
   periodCode: string;
 
+  @ApiProperty({ description: 'Total amount of the invoice in Rials' })
+  @Column('decimal', { precision: 18, scale: 0, default: 0 })
+  totalAmount: string;
+
   @ApiProperty()
   @Column()
   totalItems: number;
