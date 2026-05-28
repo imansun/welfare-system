@@ -132,6 +132,7 @@ export class InvoicesService {
         itemName: packageItem.item.name,
         unitName: packageItem.item.unit?.name ?? null,
         quantity: packageItem.quantity,
+        price: packageItem.price,
       }),
     );
 

@@ -34,6 +34,13 @@ export class InvoiceItem {
   @Column('decimal', { precision: 18, scale: 3 })
   quantity: string;
 
+  @ApiProperty({
+    description: 'Unit price of the item in Rials',
+    example: '150000',
+  })
+  @Column('decimal', { precision: 18, scale: 0 })
+  price: string;
+
   @ApiProperty()
   @CreateDateColumn()
   createdAt: Date;
