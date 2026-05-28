@@ -9,6 +9,10 @@ export class CreatePeriodPackageItemDto {
   @ApiProperty()
   @IsNumberString()
   quantity: string;
+  
+  @ApiProperty()
+  @IsNumberString()
+  price: string;
 
   @ApiProperty()
   @IsNumberString()

@@ -35,6 +35,10 @@ export class PeriodPackageItem {
   @ApiProperty()
   @Column('decimal', { precision: 18, scale: 3 })
   quantity: string;
+  
+  @ApiProperty()
+  @Column('decimal', { precision: 18, scale: 0 })
+  price: string;
 
   @ApiProperty()
   @Column('decimal', { precision: 18, scale: 0 })
