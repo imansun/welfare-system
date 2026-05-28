@@ -1,1 +1,4 @@
-Nothing needs to be added to the .gitignore file based on the provided changes. The modified file 'src/invoices/invoices.controller.ts' is a TypeScript source file that should not be ignored.
+```
+# Dependencies
+node_modules/
+```

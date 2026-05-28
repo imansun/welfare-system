@@ -112,9 +112,12 @@ export class InvoicesService {
   ): Promise<Invoice> {
     const employee = recipient.employee;
     
-    // Calculate total amount from all items
+    // Calculate total amount from all items (price * quantity for each item)
     const totalAmount = packageItems.reduce((sum, item) => {
-      const itemTotal = BigInt(item.price) * BigInt(Math.round(parseFloat(item.quantity.toString())));
+      // Convert to numbers for multiplication, then back to string to avoid precision issues
+      const price = BigInt(item.price);
+      const quantityValue = parseFloat(item.quantity.toString());
+      const itemTotal = price * BigInt(Math.round(quantityValue * 1000)) / BigInt(1000);
       return sum + itemTotal;
     }, BigInt(0));
 
