@@ -2,15 +2,18 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class ImportRecipientsResultDto {
-  @ApiProperty()
+  @ApiProperty({ description: 'شناسه دوره توزیع' })
   periodId: string;
 
-  @ApiProperty()
+  @ApiProperty({ description: 'تعداد رکوردهای با موفقیت وارد شده' })
   imported: number;
 
-  @ApiProperty()
+  @ApiProperty({ description: 'تعداد رکوردهای رد شده (به دلیل خطا یا تکراری بودن)' })
   skipped: number;
 
-  @ApiProperty({ type: [String] })
+  @ApiProperty({ 
+    type: [String],
+    description: 'لیست خطاهای رخ داده در حین ایمپورت (شامل شماره سطر و دلیل خطا)',
+  })
   errors: string[];
 }
