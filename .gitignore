@@ -1,1 +1,1 @@
-Nothing should be ignored based on the provided file changes, as they only include source code files (.ts files) without any build artifacts, dependencies, or temporary files.
+Nothing needs to be added to the .gitignore file based on the provided changes. The modified file 'src/invoices/invoices.controller.ts' is a TypeScript source file that should not be ignored.
