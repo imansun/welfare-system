@@ -137,15 +137,18 @@ export class InvoicesService {
 
     const savedInvoice = await this.invoicesRepository.save(invoice);
 
-    const invoiceItems = packageItems.map((packageItem) =>
-      this.invoiceItemsRepository.create({
+    const invoiceItems = packageItems.map((packageItem) => {
+      // Normalize quantity by removing trailing zeros
+      const normalizedQuantity = this.normalizeQuantity(packageItem.quantity);
+      
+      return this.invoiceItemsRepository.create({
         invoice: savedInvoice,
         itemName: packageItem.item.name,
         unitName: packageItem.item.unit?.name ?? null,
-        quantity: packageItem.quantity,
+        quantity: normalizedQuantity,
         price: packageItem.price,
-      }),
-    );
+      });
+    });
 
     savedInvoice.items = await this.invoiceItemsRepository.save(invoiceItems);
     return savedInvoice;
@@ -201,5 +204,11 @@ export class InvoicesService {
     personnelCode: string,
   ): string {
     return `${period.code}-${personnelCode}`;
+  }
+
+  private normalizeQuantity(quantity: string | number): string {
+    const numValue = typeof quantity === 'string' ? parseFloat(quantity) : quantity;
+    // Remove trailing zeros by converting to number and back to string
+    return numValue.toString();
   }
 }
